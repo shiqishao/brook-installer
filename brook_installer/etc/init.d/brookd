@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+### BEGIN INIT INFO
+# Provides:          shiqishao
+# Required-Start:    $network $local_fs $remote_fs
+# Required-Stop:     $network $local_fs $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: A proxy tool
+# Description:       Start or stop the Brook wsserver
+### END INIT INFO
+
+brook_bin='/usr/bin/brook'
+mode='wsserver'
+password='123456789'
+ip_addr=''
+port='12344'
+log='/var/log/brook.log'
+pid=$(ps -ef |grep "$brook_bin" |grep -v 'grep' |awk '{print $2}') 
+
+status(){
+pid=$(ps -ef |grep "$brook_bin" |grep -v 'grep' |awk '{print $2}')
+if [ "$pid" == "" ]
+then
+  echo "brook is not running"
+else
+  echo "brook is running,the pid is $pid"
+fi
+}
+start(){
+nohup $brook_bin $mode -l $ip_addr:$port -p $password >$log 2>&1 &
+}
+
+stop(){
+if [ "$pid" == "" ]
+then
+  echo "brook is not running"
+else
+  kill $pid
+fi
+}
+
+restart(){
+	stop
+	sleep 1
+	start
+	sleep 2
+	status
+}
+case "$1" in
+	start|stop|restart|status)
+	$1
+	;;
+	*)
+	echo "Usage: $0 { start | stop | restart | status }"
+	;;
+esac

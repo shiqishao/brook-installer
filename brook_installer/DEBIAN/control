@@ -1,0 +1,11 @@
+Package: brook-installer
+Version: 1.0.20210214
+Section: utils
+Priority: optional
+Depends:
+Suggests:
+Architecture: amd64
+Installed-Size: 512
+Maintainer: 1562004423@qq.com
+Provides: shiqishao
+Description: Install a brook wsserver to ubuntu 
